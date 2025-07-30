@@ -1,34 +1,52 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useRef } from "react";
 import "./App.css";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const refs = useRef<HTMLElement[]>([]);
+  const scopeRefs = useRef<HTMLElement>(null);
+
+  // Scope 선택 Hook,
+  useGSAP(
+    () => {
+      gsap.utils.toArray(refs.current).forEach((e) => {
+        console.log(e as HTMLElement);
+      });
+    },
+    {
+      scope: scopeRefs,
+      dependencies: [],
+    }
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <main ref={scopeRefs}>
+      <section
+        className=""
+        ref={(el) => {
+          if (el) refs.current.push(el);
+        }}
+      ></section>
+      <section
+        className=""
+        ref={(el) => {
+          if (el) refs.current.push(el);
+        }}
+      ></section>
+      <section
+        className=""
+        ref={(el) => {
+          if (el) refs.current.push(el);
+        }}
+      ></section>
+      <section
+        className=""
+        ref={(el) => {
+          if (el) refs.current.push(el);
+        }}
+      ></section>
+    </main>
   );
 }
 
