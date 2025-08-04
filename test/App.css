@@ -4,4 +4,6 @@
   position: absolute;
   top: 0;
   background: black;
+  overflow-y: auto;
+  width: 100%;
 }

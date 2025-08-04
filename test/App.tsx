@@ -87,6 +87,9 @@ function App() {
                 ease: "power3.inOut",
               });
             }
+            setTimeout(() => {
+              scrollingRef.current = false;
+            }, DURATIONS + 200);
           });
         } else {
           tl.to(sec as HTMLElement, {
@@ -107,11 +110,6 @@ function App() {
           });
         }
       });
-
-      //Scroll 상태 풀기
-      setTimeout(() => {
-        scrollingRef.current = false;
-      }, DURATIONS);
     };
 
     const goToNextPage = () => {
@@ -128,6 +126,17 @@ function App() {
       pageMoveHandler(prevPage, "prev");
     };
 
+    const innerContentsCalculator = () => {
+      const viewSection = pageRefs.current[page];
+      const { scrollHeight, clientHeight, scrollTop } = viewSection;
+
+      // 내부 콘텐츠 크기 계산
+      const isBottom = clientHeight + scrollTop >= scrollHeight;
+      const isTop = scrollTop <= 0;
+
+      return { isBottom, isTop };
+    };
+
     // wheel Event
     const wheelEvent = (e: WheelEvent) => {
       //스크롤 상태
@@ -135,9 +144,11 @@ function App() {
 
       const trigger = e.deltaY > 0 ? "next" : "prev";
 
-      if (trigger === "prev") {
+      const { isTop, isBottom } = innerContentsCalculator();
+
+      if (trigger === "prev" && !!isTop) {
         goToPrevPage();
-      } else if (trigger === "next") {
+      } else if (trigger === "next" && !!isBottom) {
         goToNextPage();
       }
     };
@@ -160,9 +171,11 @@ function App() {
       const TRIGGER_Y = 50;
       const deltaY = touchedPosition.current! - dragClientY;
 
-      if (deltaY > TRIGGER_Y) {
+      const { isTop, isBottom } = innerContentsCalculator();
+
+      if (deltaY > TRIGGER_Y && !!isBottom) {
         goToNextPage();
-      } else if (deltaY < -TRIGGER_Y) {
+      } else if (deltaY < -TRIGGER_Y && !!isTop) {
         goToPrevPage();
       }
     };
@@ -203,23 +216,42 @@ function App() {
   return (
     <main ref={scopeRefs}>
       <section style={{ backgroundColor: "gray" }} ref={selectSec}>
-        <h1 data-animate>Frist</h1>
-
-        <div style={{ display: "flex", gap: 5 }}>
-          <div data-animate>item 1</div>
-          <div data-animate>item 2</div>
-          <div data-animate>item 3</div>
-          <div data-animate>item 4</div>
+        <div data-wrapper>
+          <h1 data-animate>Frist</h1>
+          <div style={{ display: "flex", gap: 5 }}>
+            <div data-animate style={{ height: "1500px", background: "red" }}>
+              item 1
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 2
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 3
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 4
+            </div>
+          </div>
         </div>
       </section>
-      <section ref={selectSec}>
-        <h1 data-animate>2</h1>
 
-        <div style={{ display: "flex", gap: 5 }}>
-          <div data-animate>item 1</div>
-          <div data-animate>item 2</div>
-          <div data-animate>item 3</div>
-          <div data-animate>item 4</div>
+      <section ref={selectSec}>
+        <div data-wrapper>
+          <h1 data-animate>2</h1>
+          <div style={{ display: "flex", gap: 5 }}>
+            <div data-animate style={{ height: "1500px", background: "red" }}>
+              item 1
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 2
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 3
+            </div>
+            <div data-animate style={{ height: "1000px" }}>
+              item 4
+            </div>
+          </div>
         </div>
       </section>
 
