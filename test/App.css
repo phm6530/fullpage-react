@@ -3,7 +3,28 @@
   width: 100%;
   position: absolute;
   top: 0;
-  background: black;
   overflow-y: auto;
   width: 100%;
+}
+
+.fp-handler {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  position: fixed;
+  z-index: 10;
+  right: 30px;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.fp-handler span {
+  width: 11px;
+  height: 11px;
+  background: rgba(255, 0, 0, 0.223);
+  border-radius: 100%;
+
+  &.active {
+    background-color: rgb(255, 255, 255);
+  }
 }
