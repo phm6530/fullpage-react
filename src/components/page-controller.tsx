@@ -9,7 +9,7 @@ export default function PageController({
 }) {
   return (
     <div className="fp-handler">
-      {[...Array(pageCnt)].map((el, idx) => {
+      {[...Array(pageCnt)].map((_, idx) => {
         return (
           <span
             key={`dot-${idx}]`}

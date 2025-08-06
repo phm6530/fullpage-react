@@ -1,4 +1,4 @@
-.fp-section {
+[data-page] {
   height: calc(var(--vh, 1vh));
   width: 100%;
   position: absolute;

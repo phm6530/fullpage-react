@@ -1,22 +1,30 @@
 {
-  "name": "fullpage-lib",
-  "private": true,
+  "name": "fullpage-react-squirrel",
+  "private": false,
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "gsap": "^3.13.0",
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.13.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
+    "@types/node": "^24.2.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
@@ -26,6 +34,7 @@
     "globals": "^16.3.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4"
+    "vite": "^7.0.4",
+    "vite-plugin-dts": "^4.5.4"
   }
 }

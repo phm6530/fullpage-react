@@ -4,9 +4,7 @@ import PageController from "../src/components/page-controller";
 
 function App() {
   // use Full page..
-  const { scrollToSection, scope, ...rest } = useFullPage();
-
-  console.count();
+  const { scrollToSection, scope, movePage, ...rest } = useFullPage();
 
   //page Move
   return (
@@ -20,7 +18,7 @@ function App() {
           <h1 data-animate>Frist</h1>
           <div style={{ display: "flex", gap: 5 }}>
             <div data-animate style={{ height: "1500px", background: "red" }}>
-              item 1
+              item 1<button onClick={() => movePage(2)}>btn</button>
             </div>
             <div data-animate style={{ height: "1000px" }}>
               item 2

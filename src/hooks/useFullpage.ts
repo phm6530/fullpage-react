@@ -17,11 +17,6 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
   const touchedPosition = useRef<number>(null);
   const scope = useRef<HTMLElement>(null);
 
-  // 전체 페이지 랜더
-  useLayoutEffect(() => {
-    setPageCnt(pageRefs.current.length);
-  }, []);
-
   // PageMOveHandler..
   const pageMoveHandler = useCallback(
     (page: number, move: "next" | "prev") => {
@@ -88,14 +83,30 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
             });
           }
         }
-
-        gsap.delayedCall(duration / 1000 + 0.3, () => {
-          scrollingRef.current = false;
-        });
+      });
+      gsap.delayedCall(duration / 1000 + 0.3, () => {
+        scrollingRef.current = false;
       });
     },
     [duration]
   );
+
+  const movePage = useCallback(
+    (pageNum: number) => {
+      setPage((prev) => {
+        if (prev === pageNum) return prev;
+        const dir: "next" | "prev" = pageNum > prev ? "next" : "prev";
+        pageMoveHandler(pageNum, dir);
+        return pageNum;
+      });
+    },
+    [pageMoveHandler]
+  );
+
+  // 전체 페이지 랜더
+  useLayoutEffect(() => {
+    setPageCnt(pageRefs.current.length);
+  }, []);
 
   const goToNextPage = useCallback(() => {
     if (scrollingRef.current) return;
@@ -163,6 +174,9 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
 
     const innerContentsCalculator = () => {
       const viewSection = pageRefs.current[page];
+
+      if (!viewSection) return { isTop: false, isBottom: false };
+
       const { scrollHeight, clientHeight, scrollTop } = viewSection;
 
       // 내부 콘텐츠 크기 계산
@@ -252,7 +266,7 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
     scrollToSection,
     scope,
     curPage: page,
-    // setPage,
+    movePage,
     pageCnt,
   };
 };
