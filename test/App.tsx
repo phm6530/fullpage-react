@@ -69,7 +69,7 @@ function App() {
       </section>
 
       {/* 제공 컨트롤러 */}
-      <PageController {...rest} />
+      <PageController {...rest} pageHandler={movePage} />
     </main>
   );
 }

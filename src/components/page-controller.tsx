@@ -1,10 +1,11 @@
 export default function PageController({
   curPage,
   pageCnt,
+  pageHandler,
 }: {
   curPage: number;
   pageCnt: number;
-  setPage?: React.Dispatch<React.SetStateAction<number>>;
+  pageHandler?: (page: number) => void;
   position?: string;
 }) {
   return (
@@ -14,11 +15,7 @@ export default function PageController({
           <span
             key={`dot-${idx}]`}
             className={curPage === idx ? "active" : undefined}
-            // {...(setPage && {
-            //   onClick: () => {
-            //     setPage(idx);
-            //   },
-            // })}
+            {...(!!pageHandler && { onClick: () => pageHandler(idx) })}
           />
         );
       })}
