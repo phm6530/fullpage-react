@@ -3,17 +3,19 @@
 한 섹션씩 스크롤/스와이프로 전환되는 React 훅입니다.  
 FOUC 방지, 내부 스크롤 Top/Bottom 게이트, 모바일 터치, 리사이즈 대응 포함.
 
-[![npm version](https://img.shields.io/npm/v/your-package-name.svg)](https://www.npmjs.com/package/your-package-name)
-[![license](https://img.shields.io/npm/l/your-package-name.svg)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/fullpage-react-squirrel
+.svg)](https://www.npmjs.com/package/fullpage-react-squirrel)
+[![license](https://img.shields.io/npm/l/fullpage-react-squirrel
+.svg)](LICENSE)
 
 ---
 
 ## 설치
 
 ```bash
-npm i your-package-name gsap @gsap/react
+npm i fullpage-react-squirrel
 # 또는
-yarn add your-package-name gsap @gsap/react
+yarn add fullpage-react-squirrel
 ```
 
 # 빠른시작
@@ -59,7 +61,8 @@ yarn add your-package-name gsap @gsap/react
 "use client";
 
 import React from "react";
-import { useFullPage } from "your-package-name";
+import { useFullPage } from "fullpage-react-squirrel
+";
 import { GSAPProvider } from "@gsap/react";
 
 export default function Demo() {
@@ -72,9 +75,6 @@ export default function Demo() {
           <section
             key={i}
             data-page={i}
-            ref={scrollToSection}
-            className="fp-section"
-            style={{ display: "grid", placeItems: "center" }}
           >
             <h1 data-animate>Section {i}</h1>
             <p data-animate>
