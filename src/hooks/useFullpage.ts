@@ -169,31 +169,37 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
     };
   }, [page]);
 
+  const innerContentsCalculator = useCallback((sec: HTMLDivElement) => {
+    const viewSection = sec;
+
+    if (!viewSection) return { isTop: false, isBottom: false };
+
+    const { scrollHeight, clientHeight, scrollTop } = viewSection;
+
+    // 내부 콘텐츠 크기 계산
+    const isBottom =
+      Math.ceil(clientHeight + scrollTop) >= Math.floor(scrollHeight);
+    const isTop = scrollTop <= 0;
+
+    return { isBottom, isTop };
+  }, []);
+
   useEffect(() => {
     //move Handler
 
-    const innerContentsCalculator = () => {
-      const viewSection = pageRefs.current[page];
-
-      if (!viewSection) return { isTop: false, isBottom: false };
-
-      const { scrollHeight, clientHeight, scrollTop } = viewSection;
-
-      // 내부 콘텐츠 크기 계산
-      const isBottom = clientHeight + scrollTop >= scrollHeight;
-      const isTop = scrollTop <= 0;
-
-      return { isBottom, isTop };
-    };
-
     // wheel Event
     const wheelEvent = (e: WheelEvent) => {
-      //스크롤 상태
-      if (scrollingRef.current) return;
+      //스크롤 상태 - 모멘텀 방지
+      if (scrollingRef.current) {
+        e.preventDefault();
+        return;
+      }
 
       const trigger = e.deltaY > 0 ? "next" : "prev";
 
-      const { isTop, isBottom } = innerContentsCalculator();
+      const { isTop, isBottom } = innerContentsCalculator(
+        pageRefs.current[page] as HTMLDivElement
+      );
 
       if (trigger === "prev" && !!isTop) {
         goToPrevPage();
@@ -220,7 +226,9 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
       const TRIGGER_Y = 50;
       const deltaY = touchedPosition.current! - dragClientY;
 
-      const { isTop, isBottom } = innerContentsCalculator();
+      const { isTop, isBottom } = innerContentsCalculator(
+        pageRefs.current[page] as HTMLDivElement
+      );
 
       if (deltaY > TRIGGER_Y && !!isBottom) {
         goToNextPage();
@@ -242,7 +250,7 @@ export const useFullPage = ({ duration = 600 }: UseFullpagePropsType = {}) => {
       window.removeEventListener("touchmove", touchedMove);
       window.removeEventListener("touchend", touchedCleaner);
     };
-  }, [page, goToNextPage, goToPrevPage]);
+  }, [page, goToNextPage, goToPrevPage, innerContentsCalculator]);
 
   // inital ,
   useGSAP(
